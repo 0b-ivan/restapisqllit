@@ -65,22 +65,9 @@ app.get("/api/user/:id", (req, res, next) => {
 
 //POST
 app.post("/api/user/", (req, res, next) => {
-    let errors=[]
-    if (!req.body.password){
-        errors.push("No password specified");
-    }
-    if (!req.body.email){
-        errors.push("No email specified");
-    }
-    if (errors.length){
-        res.status(400).json({"error":errors.join(",")});
-        return;
-    }
-    let data = {
-        name: req.body.name,
-        email: req.body.email,
-        password : md5(req.body.password)
-    }
+
+    getErrors(req,res)
+    let data = extracted(req)
     const sql ='INSERT INTO user (name, email, password) VALUES (?,?,?)'
     let params =[data.name, data.email, data.password]
     db.run(sql, params, function (err, result) {
@@ -97,11 +84,8 @@ app.post("/api/user/", (req, res, next) => {
 })
 //UPDATE
 app.patch("/api/user/:id", (req, res, next) => {
-    var data = {
-        name: req.body.name,
-        email: req.body.email,
-        password : req.body.password ? md5(req.body.password) : null
-    }
+
+    let data = extracted(req);
     db.run(
         `UPDATE user set 
            name = COALESCE(?,name), 
@@ -122,9 +106,30 @@ app.patch("/api/user/:id", (req, res, next) => {
         });
 })
 
-
-
 // Default response for any other request
 app.use((req, res)=>{
     res.status(404);
 });
+
+//refactor area:
+function extracted(req) {
+    return {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password ? md5(req.body.password) : null
+    };
+}
+function getErrors(req,res) {
+    let errors = []
+
+    if (!req.body.password){
+        errors.push("No password specified");
+    }
+    if (!req.body.email){
+        errors.push("No email specified");
+    }
+    if (errors.length){
+        res.status(400).json({"error":errors.join(",")});
+        return [];
+    }
+}
