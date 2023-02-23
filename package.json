@@ -1,0 +1,19 @@
+{
+  "name": "restapisqllit",
+  "version": "1.0.0",
+  "description": "Build a REST API with Node.js SQLite and Express JS",
+  "main": "index.js",
+  "scripts": {
+    "run": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Ivan Babayev",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ip": "^2.0.0",
+    "md5": "^2.3.0",
+    "sqlite3": "^5.1.4"
+  }
+}
