@@ -10,6 +10,7 @@
   "keywords": [],
   "author": "Ivan Babayev",
   "license": "ISC",
+  "git repository":"https://github.com/iverybee/restapisqllit",
   "dependencies": {
     "express": "^4.18.2",
     "ip": "^2.0.0",
